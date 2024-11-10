@@ -26,3 +26,11 @@ your-script-name = "your_module.your_main_function:main"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+
+[tool.coverage.run]
+branch = true
+disable_warnings = ["no-data-collected"]
+
+[tool.coverage.report]
+fail_under = 0
