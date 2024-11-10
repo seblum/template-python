@@ -1,0 +1,6 @@
+# .coveragerc
+[run]
+branch = True
+
+[report]
+fail_under = 0
