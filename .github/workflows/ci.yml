@@ -3,7 +3,7 @@ name: 📦 CI Workflow (on PR)
 
 on:
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
