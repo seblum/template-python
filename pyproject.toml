@@ -16,6 +16,7 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.8"
 requests = "^2.28"  # Remove or replace dependencies as needed
+ruff = "^0.7.3"
 
 [tool.poetry.scripts]
 your-script-name = "your_module.your_main_function:main"
