@@ -1,7 +1,6 @@
 # .coveragerc
 [run]
 branch = True
-omit = tests/*
 allow_missing = True
 
 [report]
