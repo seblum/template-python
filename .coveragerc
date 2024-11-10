@@ -1,6 +1,9 @@
 # .coveragerc
 [run]
 branch = True
+omit =
+    tests/*
+allow_missing = True  # This is equivalent to --allow-no-source
 
 [report]
-fail_under = 0
+fail_under = 0  # Avoids failing due to no data collected
