@@ -1,0 +1,63 @@
+name: 🏗️📦🚀 CD Workflow
+
+env:
+  DOCKERREPO: seblum/insert-repo-name-here
+
+
+on:
+  workflow_dispatch:
+#   push:
+#     branches: main
+#     paths:
+#       - src/**
+#       - Dockerfile
+#       - pyproject.toml
+#       - CHANGELOG.md
+
+jobs:
+  get-tag:
+    name: Get Tag
+    runs-on: ubuntu-latest
+    outputs:
+      PACKAGE_VERSION: ${{ steps.extract_version.outputs.PACKAGE_VERSION }}
+    steps:
+      - 
+        name: Checkout code
+        uses: actions/checkout@v4
+      -  
+        name: 🔍 Extract version from pyproject.toml
+        id: extract_version
+        run: |
+          VERSION=$(sed -n 's/^version = "\(.*\)"/\1/p' ./pyproject.toml)
+          echo "PACKAGE_VERSION=$VERSION" >> $GITHUB_OUTPUT
+
+  docker:
+    name: "📦 Build & Push : ${{ matrix.tags }}"
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        tags: ["latest","v${{ needs.get-tag.outputs.PACKAGE_VERSION }}"]
+    needs: get-tag
+    steps:
+      - 
+        name: Checkout code
+        uses: actions/checkout@v4
+      -
+        name: ⚙️ Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      -
+        name: ⚙️ Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      -
+        name: ⚙️ Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: 🏗️📦🚀 Build and push
+        uses: docker/build-push-action@v6
+        with:
+          file: ./Dockerfile
+          push: true
+          tags: ${{ env.DOCKERREPO }}:${{ matrix.tags }}
